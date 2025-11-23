@@ -14,6 +14,7 @@ use App\Http\Controllers\PagoController;
 use App\Http\Controllers\CronogramaController;
 use App\Http\Controllers\TareaController;
 use App\Http\Controllers\EvaluacionServicioController;
+use App\Http\Controllers\MenuItemController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -25,6 +26,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
+
+    // Menu Management
+    Route::resource('menu-items', MenuItemController::class);
+    Route::post('menu-items/update-order', [MenuItemController::class, 'updateOrder'])->name('menu-items.update-order');
 
     // CRUDs resources
     Route::resource('clientes', ClienteController::class);

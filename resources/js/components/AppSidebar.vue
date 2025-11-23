@@ -13,86 +13,34 @@ import {
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
 import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/vue3';
-import { BookOpen, Folder, LayoutGrid, Users, FolderOpen, BarChart3, ShoppingCart, Truck, CreditCard, Calendar, CheckSquare, Star, FileText } from 'lucide-vue-next';
-import { ref } from 'vue';
+import { Link, usePage } from '@inertiajs/vue3';
+import { Settings } from 'lucide-vue-next';
+import { ref, computed } from 'vue';
 import AppLogo from './AppLogo.vue';
+import { getIconComponent } from '@/lib/icons';
 
+const page = usePage();
 const darkMode = ref(false);
 
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        href: dashboard(),
-        icon: LayoutGrid,
-    },
-    {
-        title: 'Clientes',
-        href: '/clientes',
-        icon: Users,
-    },
-    {
-        title: 'Proyectos',
-        href: '/proyectos',
-        icon: FolderOpen,
-    },
-    {
-        title: 'Cotizaciones',
-        href: '/cotizaciones',
-        icon: BarChart3,
-    },
-    {
-        title: 'Diseños',
-        href: '/disenos',
-        icon: ShoppingCart,
-    },
-    {
-        title: 'Productos',
-        href: '/productos',
-        icon: FileText,
-    },
-    {
-        title: 'Proveedores',
-        href: '/proveedores',
-        icon: Truck,
-    },
-    {
-        title: 'Plan Pagos',
-        href: '/plan-pagos',
-        icon: CreditCard,
-    },
-    {
-        title: 'Pagos',
-        href: '/pagos',
-        icon: CreditCard,
-    },
-    {
-        title: 'Cronogramas',
-        href: '/cronogramas',
-        icon: Calendar,
-    },
-    {
-        title: 'Tareas',
-        href: '/tareas',
-        icon: CheckSquare,
-    },
-    {
-        title: 'Evaluaciones',
-        href: '/evaluacion-servicios',
-        icon: Star,
-    },
-];
+// Obtener el menú del props compartido
+const menuItems = computed(() => {
+    const menu = (page.props as any).menu || [];
+    return menu.map((item: any) => ({
+        title: item.label,
+        href: item.href || (item.route ? `/api/menu/route/${item.route}` : ''),
+        icon: getIconComponent(item.icon),
+        items: item.children?.map((child: any) => ({
+            title: child.label,
+            href: child.href || (child.route ? `/api/menu/route/${child.route}` : ''),
+        })) || [],
+    }));
+});
 
 const footerNavItems: NavItem[] = [
     {
-        title: 'Github Repo',
-        href: 'https://github.com/laravel/vue-starter-kit',
-        icon: Folder,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#vue',
-        icon: BookOpen,
+        title: 'Gestión de Menú',
+        href: '/menu-items',
+        icon: Settings,
     },
 ];
 
@@ -132,7 +80,7 @@ if (typeof localStorage !== 'undefined') {
         </SidebarHeader>
 
         <SidebarContent>
-            <NavMain :items="mainNavItems" />
+            <NavMain :items="menuItems" />
         </SidebarContent>
 
         <SidebarFooter>
