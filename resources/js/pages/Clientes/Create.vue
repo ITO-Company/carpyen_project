@@ -2,6 +2,8 @@
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
+import FormField from '@/components/FormField.vue';
+import { useFormValidation, type ValidationRule } from '@/composables/useFormValidation';
 
 const form = useForm({
     nombre: '',
@@ -10,7 +12,33 @@ const form = useForm({
     direccion: '',
 });
 
+// Reglas de validación
+const validationRules: Record<string, ValidationRule> = {
+    nombre: {
+        required: true,
+        minLength: 2,
+        maxLength: 100,
+    },
+    email: {
+        required: true,
+        email: true,
+    },
+    telefono: {
+        phone: true,
+        minLength: 10,
+        maxLength: 20,
+    },
+    direccion: {
+        maxLength: 255,
+    },
+};
+
+const { errors, validate, validateFieldReal } = useFormValidation(form.data(), validationRules);
+
 const submit = () => {
+    if (!validate()) {
+        return;
+    }
     form.post('/clientes');
 };
 </script>
@@ -27,45 +55,43 @@ const submit = () => {
             </div>
 
             <form @submit.prevent="submit" class="space-y-6 bg-white dark:bg-slate-800 p-6 rounded-lg border">
-                <div>
-                    <label class="block text-sm font-medium mb-2">Nombre</label>
-                    <input
-                        v-model="form.nombre"
-                        type="text"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-slate-900 dark:text-white"
-                        required
-                    />
-                    <span v-if="form.errors.nombre" class="text-red-500 text-sm">{{ form.errors.nombre }}</span>
-                </div>
+                <FormField
+                    v-model="form.nombre"
+                    type="text"
+                    label="Nombre"
+                    placeholder="Ej: Juan García"
+                    required
+                    :error="(errors as any).nombre"
+                    @blur="validateFieldReal('nombre')"
+                />
 
-                <div>
-                    <label class="block text-sm font-medium mb-2">Email</label>
-                    <input
-                        v-model="form.email"
-                        type="email"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-slate-900 dark:text-white"
-                        required
-                    />
-                    <span v-if="form.errors.email" class="text-red-500 text-sm">{{ form.errors.email }}</span>
-                </div>
+                <FormField
+                    v-model="form.email"
+                    type="email"
+                    label="Email"
+                    placeholder="Ej: juan@example.com"
+                    required
+                    :error="(errors as any).email"
+                    @blur="validateFieldReal('email')"
+                />
 
-                <div>
-                    <label class="block text-sm font-medium mb-2">Teléfono</label>
-                    <input
-                        v-model="form.telefono"
-                        type="text"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-slate-900 dark:text-white"
-                    />
-                </div>
+                <FormField
+                    v-model="form.telefono"
+                    type="tel"
+                    label="Teléfono"
+                    placeholder="Ej: +34 123 456 789"
+                    :error="(errors as any).telefono"
+                    @blur="validateFieldReal('telefono')"
+                />
 
-                <div>
-                    <label class="block text-sm font-medium mb-2">Dirección</label>
-                    <input
-                        v-model="form.direccion"
-                        type="text"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-slate-900 dark:text-white"
-                    />
-                </div>
+                <FormField
+                    v-model="form.direccion"
+                    type="text"
+                    label="Dirección"
+                    placeholder="Ej: Calle Principal 123"
+                    :error="(errors as any).direccion"
+                    @blur="validateFieldReal('direccion')"
+                />
 
                 <div class="flex gap-2">
                     <Button type="submit" :disabled="form.processing" class="cursor-pointer">
