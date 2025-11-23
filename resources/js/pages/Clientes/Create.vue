@@ -68,7 +68,7 @@ const submit = () => {
                 </div>
 
                 <div class="flex gap-2">
-                    <Button type="submit" :disabled="form.processing">
+                    <Button type="submit" :disabled="form.processing" class="cursor-pointer">
                         {{ form.processing ? 'Creando...' : 'Crear Cliente' }}
                     </Button>
                     <Link href="/clientes">
