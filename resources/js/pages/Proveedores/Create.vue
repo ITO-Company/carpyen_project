@@ -3,7 +3,6 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
 import FormField from '@/components/FormField.vue';
-import FormTextarea from '@/components/FormTextarea.vue';
 import { useFormValidation, type ValidationRule } from '@/composables/useFormValidation';
 
 const form = useForm({
