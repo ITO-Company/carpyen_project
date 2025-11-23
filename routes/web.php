@@ -15,6 +15,7 @@ use App\Http\Controllers\CronogramaController;
 use App\Http\Controllers\TareaController;
 use App\Http\Controllers\EvaluacionServicioController;
 use App\Http\Controllers\MenuItemController;
+use App\Http\Controllers\PageVisitController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -30,6 +31,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Menu Management
     Route::resource('menu-items', MenuItemController::class);
     Route::post('menu-items/update-order', [MenuItemController::class, 'updateOrder'])->name('menu-items.update-order');
+
+    // Page Visit Statistics
+    Route::get('page-visits', [PageVisitController::class, 'index'])->name('page-visits.index');
+    Route::post('page-visits/{pageName}/reset', [PageVisitController::class, 'reset'])->name('page-visits.reset');
+    Route::post('page-visits/reset-all', [PageVisitController::class, 'resetAll'])->name('page-visits.reset-all');
 
     // CRUDs resources
     Route::resource('clientes', ClienteController::class);
