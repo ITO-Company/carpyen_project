@@ -1,19 +1,9 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
 
-const form = useForm({});
-
-const endpoints = {
-    'disenos': '/disenos',
-    'proveedores': '/proveedores',
-    'plan-pagos': '/plan-pagos',
-    'pagos': '/pagos',
-    'cronogramas': '/cronogramas',
-    'tareas': '/tareas',
-    'evaluacion-servicios': '/evaluacion-servicios'
-};
+defineProps<{ diseno: any }>();
 </script>
 
 <template>

@@ -4,14 +4,14 @@ import { Head, Link, useForm } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
 
 interface Props {
-    cliente: any;
+    cliente: Record<string, any>;
 }
 
 const props = defineProps<Props>();
 
 const form = useForm({
-    nombre: props.cliente.nombre,
-    email: props.cliente.email,
+    nombre: props.cliente.nombre || '',
+    email: props.cliente.email || '',
     telefono: props.cliente.telefono || '',
     direccion: props.cliente.direccion || '',
 });
@@ -41,7 +41,6 @@ const submit = () => {
                         class="w-full px-4 py-2 border rounded-lg dark:bg-slate-900 dark:text-white"
                         required
                     />
-                    <span v-if="form.errors.nombre" class="text-red-500 text-sm">{{ form.errors.nombre }}</span>
                 </div>
 
                 <div>
@@ -52,7 +51,6 @@ const submit = () => {
                         class="w-full px-4 py-2 border rounded-lg dark:bg-slate-900 dark:text-white"
                         required
                     />
-                    <span v-if="form.errors.email" class="text-red-500 text-sm">{{ form.errors.email }}</span>
                 </div>
 
                 <div>

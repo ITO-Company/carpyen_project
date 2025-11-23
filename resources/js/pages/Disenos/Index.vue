@@ -1,14 +1,10 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Head, Link, router } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
-import { Trash2, Edit, Plus } from 'lucide-vue-next';
+import { Plus } from 'lucide-vue-next';
 
-interface Props {
-    disenos: any;
-}
-
-defineProps<Props>();
+defineProps<{ disenos: any }>();
 </script>
 
 <template>
