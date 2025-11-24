@@ -12,9 +12,14 @@ class PagoController extends Controller
 {
     public function index()
     {
-        $pagos = Pago::with(['cliente', 'planPago'])->paginate(10);
+        $pagos = Pago::with(['cliente', 'planPago'])->get();
+        $plans = PlanPago::all();
+        $clients = Cliente::all();
+        
         return Inertia::render('Pagos/Index', [
             'pagos' => $pagos,
+            'plans' => $plans,
+            'clients' => $clients,
         ]);
     }
 

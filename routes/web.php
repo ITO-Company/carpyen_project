@@ -24,11 +24,10 @@ Route::get('/', function () {
 })->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
-
-    // Menu Management
+    // Dashboard con datos de pagos y planes
+Route::get('dashboard', function () {
+    return Inertia::render('Dashboard');
+})->name('dashboard');    // Menu Management
     Route::resource('menu-items', MenuItemController::class);
     Route::post('menu-items/update-order', [MenuItemController::class, 'updateOrder'])->name('menu-items.update-order');
 

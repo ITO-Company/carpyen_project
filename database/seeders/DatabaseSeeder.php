@@ -23,5 +23,12 @@ class DatabaseSeeder extends Seeder
 
         // Seed menu items
         $this->call(MenuItemSeeder::class);
+        
+        // Seed clientes y proyectos (requeridos para planes de pago)
+        $this->call(ClienteSeeder::class);
+        $this->call(ProyectoSeeder::class);
+        
+        // Seed planes de pago y pagos
+        $this->call(PlanPagoSeeder::class);
     }
 }
